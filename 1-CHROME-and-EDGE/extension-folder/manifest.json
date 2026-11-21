@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "PKR Currency Converter",
+  "version": "3.5.0",
+  "description": "Pakistani Rupee converter with dashboard, rate chart, alerts, gold and remittance tools. Works offline.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "PKR Converter",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_page": "dashboard.html",
+  "permissions": [
+    "storage",
+    "alarms",
+    "notifications",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "https://open.er-api.com/*",
+    "https://api.gold-api.com/*",
+    "https://cdn.jsdelivr.net/*",
+    "https://*.currency-api.pages.dev/*"
+  ],
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+C"
+      },
+      "description": "Open the PKR converter"
+    }
+  },
+  "homepage_url": "https://portfolio-pi-green-77.vercel.app/"
+}

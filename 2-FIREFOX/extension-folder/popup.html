@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto" data-palette="green">
+<head><meta charset="UTF-8"><title>PKR Converter</title><link rel="stylesheet" href="style.css"></head>
+<body class="popup">
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+<symbol id="i-swap" viewBox="0 0 24 24"><path d="M17 4l4 4-4 4"/><path d="M3 8h18"/><path d="M7 20l-4-4 4-4"/><path d="M21 16H3"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></symbol>
+<symbol id="i-ext" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></symbol>
+</svg>
+  <header class="top">
+    <div class="brand"><img class="logo" src="icons/logo.svg" alt=""><h1 data-i18n="appName">PKR Converter</h1></div>
+    <div class="row">
+      <span id="status" class="status" data-state="builtin"></span>
+      <button id="dash" class="btn ghost"><svg class="i" aria-hidden="true"><use href="#i-grid"/></svg><span data-i18n="openDash">Dashboard</span></button>
+    </div>
+  </header>
+  <main>
+    <label for="amount" data-i18n="amount">Amount</label>
+    <input id="amount" type="number" min="0" step="any" value="1000" inputmode="decimal" autofocus>
+    <div class="pair">
+      <div><label for="from" data-i18n="from">From</label><select id="from"></select></div>
+      <button id="swap" type="button" data-i18n-title="swap"><svg class="i" aria-hidden="true"><use href="#i-swap"/></svg></button>
+      <div><label for="to" data-i18n="to">To</label><select id="to"></select></div>
+    </div>
+    <div class="result" aria-live="polite">
+      <span class="sheen" aria-hidden="true"></span>
+      <div id="result" class="big">—</div>
+      <div id="rate" class="small"></div>
+      <div class="row" style="flex-wrap:wrap;margin-top:8px">
+        <button id="favBtn" class="btn ghost" type="button"></button>
+        <button id="copyBtn" class="btn ghost" type="button"><svg class="i" aria-hidden="true"><use href="#i-copy"/></svg><span data-i18n="copy">Copy</span></button>
+        <button id="shareBtn" class="btn ghost" type="button"><svg class="i" aria-hidden="true"><use href="#i-send"/></svg><span data-i18n="shareBtn">WhatsApp</span></button>
+      </div>
+      <div class="row" style="justify-content:space-between;margin-top:10px">
+        <span id="trend" class="trend"></span>
+        <span class="chips">
+          <button class="chip" data-d="7" data-i18n="d7">7 days</button>
+          <button class="chip" data-d="30" data-i18n="d30">30 days</button>
+        </span>
+      </div>
+      <svg id="spark" class="spark" viewBox="0 0 300 46" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div id="verdict" class="verdict"></div>
+    </div>
+  </main>
+  <section>
+    <h2 data-i18n="favourites">Favourite pairs</h2>
+    <div id="favs" class="chips"></div>
+    <h2 data-i18n="palette">Colour theme</h2>
+    <div id="swatches" class="swatches"></div>
+    <details>
+      <summary data-i18n="history">Recent conversions</summary>
+      <button id="clearHist" class="chip" data-i18n="clear">Clear</button>
+      <ul id="hist" class="hist"></ul>
+    </details>
+  </section>
+  <footer>
+    <span id="updated" class="small"></span>
+    <button id="refresh" class="btn" type="button" data-i18n="refresh">Refresh rates</button>
+  </footer>
+  <script src="shared.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

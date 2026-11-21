@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head><meta charset="UTF-8"><title>PKR Converter Dashboard</title><link rel="stylesheet" href="style.css"></head>
+<body class="dash">
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+<symbol id="i-swap" viewBox="0 0 24 24"><path d="M17 4l4 4-4 4"/><path d="M3 8h18"/><path d="M7 20l-4-4 4-4"/><path d="M21 16H3"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></symbol>
+<symbol id="i-ext" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></symbol>
+</svg>
+  <header class="top">
+    <div class="brand"><img class="logo" src="icons/logo.svg" alt=""><h1 data-i18n="appName">PKR Converter</h1></div>
+    <div class="row">
+      <span id="status" class="status" data-state="builtin"></span>
+      <button id="refresh" class="btn ghost" data-i18n="refresh">Refresh rates</button>
+    </div>
+  </header>
+  <div class="wrap">
+    <nav class="tabs">
+      <span class="ink" aria-hidden="true"></span>
+      <button data-tab="overview" class="on" data-i18n="tabOverview">Overview</button>
+      <button data-tab="alerts" data-i18n="tabAlerts">Alerts</button>
+      <button data-tab="tools" data-i18n="tabTools">Tools</button>
+      <button data-tab="settings" data-i18n="tabSettings">Settings</button>
+      <button data-tab="faq" data-i18n="tabFaq">FAQ</button>
+      <button data-tab="about" data-i18n="tabAbout">About</button>
+    </nav>
+
+    <section id="tab-overview" class="tab on">
+      <div class="grid">
+        <div class="card">
+          <h2 data-i18n="boardTitle">Rates in PKR</h2>
+          <p class="small" data-i18n="boardSub"></p>
+          <table><tbody id="board"></tbody></table>
+        </div>
+        <div class="card">
+          <h2 data-i18n="chartTitle">Rate chart</h2>
+          <div class="chips" id="favRow" style="margin-bottom:10px"></div>
+          <div class="chartbar">
+            <select id="cFrom"></select><span>→</span><select id="cTo"></select>
+            <button class="btn ghost" data-days="7" data-i18n="d7">7 days</button>
+            <button class="btn ghost on" data-days="30" data-i18n="d30">30 days</button>
+            <button class="btn ghost" data-days="90" data-i18n="d90">90 days</button>
+          </div>
+          <div id="trendRow" class="trendrow"></div>
+          <p id="verdict" class="verdict"></p>
+          <p class="small" data-i18n="vNote"></p>
+          <svg id="chart" viewBox="0 0 600 220" role="img" aria-label="Rate chart"></svg>
+          <p id="chartNote" class="small"></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-alerts" class="tab">
+      <div class="card">
+        <h2 data-i18n="alertsTitle">Rate alerts</h2>
+        <p class="small" data-i18n="alertsHint"></p>
+        <div class="fields">
+          <div><label data-i18n="from">From</label><select id="aFrom"></select></div>
+          <div><label data-i18n="to">To</label><select id="aTo"></select></div>
+          <div><label data-i18n="alertWhen">Tell me when</label>
+            <select id="aCond"><option value="above" data-i18n="above">goes above</option><option value="below" data-i18n="below">goes below</option><option value="rise" data-i18n="riseBy">rises by (%)</option><option value="fall" data-i18n="fallBy">falls by (%)</option></select></div>
+          <div><label data-i18n="target">Target rate</label><input id="aTarget" type="number" step="any" min="0"></div>
+        </div>
+        <button id="aAdd" class="btn" data-i18n="addAlert">Add alert</button>
+        <ul id="aList" class="alist"></ul>
+      </div>
+    </section>
+
+    <section id="tab-tools" class="tab">
+      <h2 class="tools-h" data-i18n="toolsEveryday">Everyday money</h2>
+      <div class="tool-cols">
+        <div class="stack">
+        <div class="card">
+          <h2 data-i18n="calcTitle">Quick calculator</h2>
+          <p class="small" data-i18n="calcHint"></p>
+          <input id="cInput" type="text" placeholder="50 usd + 20 eur in pkr" autocomplete="off">
+          <div class="out"><b id="cOut">—</b></div>
+        </div>
+        <div class="card">
+          <h2 data-i18n="remitTitle">Send money home</h2>
+          <div class="fields">
+            <div><label data-i18n="sendAmount">You send</label><input id="rAmt" type="number" min="0" step="any" value="500"></div>
+            <div><label data-i18n="from">From</label><select id="rCur"></select></div>
+            <div><label data-i18n="fixedFee">Fixed fee</label><input id="rFixed" type="number" min="0" step="any" value="0"></div>
+            <div><label data-i18n="feePct">Fee (%)</label><input id="rPct" type="number" min="0" step="any" value="0"></div>
+          </div>
+          <div class="out"><div class="small" data-i18n="recipientGets"></div><b id="rOut">—</b><div id="rEff" class="small"></div></div>
+        </div>
+        <div class="card">
+          <h2 data-i18n="myRateTitle">Compare with my money changer</h2>
+          <div class="fields"><div class="full"><label data-i18n="myRateLabel">My rate</label><input id="myRate" type="number" min="0" step="any"></div></div>
+          <div class="out"><b id="myOut">—</b></div>
+        </div>
+        </div>
+        <div class="stack">
+        <div class="card">
+          <h2 data-i18n="multiTitle">One amount, all currencies</h2>
+          <div class="fields">
+            <div><label data-i18n="amount">Amount</label><input id="mAmt" type="number" min="0" step="any" value="1000"></div>
+            <div><label data-i18n="from">From</label><select id="mCur"></select></div>
+          </div>
+          <table><tbody id="mTable"></tbody></table>
+        </div>
+        </div>
+      </div>
+      <h2 class="tools-h" data-i18n="toolsFaith">Gold, zakat and Hajj</h2>
+      <div class="tool-cols">
+        <div class="stack">
+        <div class="card">
+          <h2 data-i18n="goldTitle">Gold in PKR</h2>
+          <p class="small" data-i18n="goldNote"></p>
+          <div class="fields">
+            <div class="full"><label data-i18n="goldUsd">Gold price (USD per ounce)</label>
+              <div class="row"><input id="gUsd" type="number" min="0" step="any"><button id="gBtn" class="btn" data-i18n="fetchGold">Fetch price</button></div></div>
+          </div>
+          <table><thead><tr><th>K</th><th class="num" data-i18n="perGram"></th><th class="num" data-i18n="perTola"></th></tr></thead><tbody id="gTable"></tbody></table>
+          <p id="gMsg" class="small"></p>
+        </div>
+        <div class="card">
+          <h2 data-i18n="hajjTitle">Hajj / Umrah budget</h2>
+          <p class="small" data-i18n="hajjNote"></p>
+          <div class="fields">
+            <div><label data-i18n="flight">Flights (PKR)</label><input id="h_flight" type="number" min="0" step="any"></div>
+            <div><label data-i18n="days">Days</label><input id="h_days" type="number" min="0" step="any"></div>
+            <div><label data-i18n="nights">Hotel nights</label><input id="h_nights" type="number" min="0" step="any"></div>
+            <div><label data-i18n="hotelNight">Hotel per night (SAR)</label><input id="h_hotel" type="number" min="0" step="any"></div>
+            <div><label data-i18n="foodDay">Food per day (SAR)</label><input id="h_food" type="number" min="0" step="any"></div>
+            <div><label data-i18n="transport">Transport (SAR)</label><input id="h_trans" type="number" min="0" step="any"></div>
+            <div class="full"><label data-i18n="other">Other (SAR)</label><input id="h_other" type="number" min="0" step="any"></div>
+          </div>
+          <div class="out">
+            <div class="small" data-i18n="totalSar"></div><b id="hSar">—</b>
+            <div class="small" style="margin-top:6px" data-i18n="totalPkr"></div><b id="hPkr">—</b>
+          </div>
+        </div>
+        </div>
+        <div class="stack">
+        <div class="card">
+          <h2 data-i18n="zakatTitle">Zakat calculator</h2>
+          <p class="small" data-i18n="zakatNote"></p>
+          <div class="fields">
+            <div><label data-i18n="zCash">Cash</label><input id="zCash" type="number" min="0" step="any"></div>
+            <div><label data-i18n="zBiz">Business</label><input id="zBiz" type="number" min="0" step="any"></div>
+            <div><label data-i18n="zForeign">Foreign savings</label><input id="zFor" type="number" min="0" step="any"></div>
+            <div><label data-i18n="currency">Currency</label><select id="zForCur"></select></div>
+            <div><label data-i18n="zGold">Gold</label><input id="zGold" type="number" min="0" step="any"></div>
+            <div><label data-i18n="zSilver">Silver</label><input id="zSilver" type="number" min="0" step="any"></div>
+            <div><label data-i18n="zDebt">Debts</label><input id="zDebt" type="number" min="0" step="any"></div>
+            <div><label data-i18n="zStd">Nisab standard</label>
+              <select id="zStd"><option value="silver" data-i18n="zSilverStd">Silver</option><option value="gold" data-i18n="zGoldStd">Gold</option></select></div>
+            <div class="full"><label data-i18n="silverUsd">Silver price</label>
+              <div class="row"><input id="zSilverUsd" type="number" min="0" step="any"><button id="zSBtn" class="btn" data-i18n="fetchGold">Fetch price</button></div>
+              <p class="small" data-i18n="zGoldHint" style="margin:6px 0 0"></p></div>
+          </div>
+          <div class="out" id="zOut"></div>
+        </div>
+        <div class="card">
+          <h2 data-i18n="notesTitle">How these numbers are worked out</h2>
+          <ul class="plain" style="margin-top:6px"><li data-i18n="note1"></li><li data-i18n="note2"></li><li data-i18n="note3"></li></ul>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-settings" class="tab">
+      <div class="card" style="max-width:520px">
+        <div class="fields">
+          <div><label data-i18n="language">Language</label>
+            <select id="sLang"><option value="en">English</option><option value="ur">اردو</option></select></div>
+          <div><label data-i18n="theme">Theme</label>
+            <select id="sTheme"><option value="auto" data-i18n="themeAuto">Match system</option><option value="light" data-i18n="themeLight">Light</option><option value="dark" data-i18n="themeDark">Dark</option></select></div>
+          <div class="full"><label data-i18n="palette">Colour theme</label><div id="sPal" class="swatches"></div></div>
+          <div><label data-i18n="badgeLabel">Toolbar badge</label><select id="sBadge"></select></div>
+          <div class="full"><label class="check"><input id="sDaily" type="checkbox"><span data-i18n="dailyLabel">Daily summary</span></label></div>
+          <div class="full"><label class="check"><input id="sLakh" type="checkbox"><span data-i18n="lakhFmt">Lakh / Crore</span></label></div>
+          <div class="full"><label data-i18n="adjLabel">Open-market adjustment</label><input id="sAdj" type="number" step="any" value="0">
+            <p class="small" data-i18n="adjHint"></p></div>
+        </div>
+        <p class="small" data-i18n="shortcut"></p>
+      </div>
+      <div class="card" style="max-width:520px;margin-top:16px">
+        <h2 data-i18n="dataTitle">Backup and export</h2>
+        <div class="chips" style="margin-top:10px">
+          <button id="dExpR" class="btn ghost" data-i18n="exportRates"></button>
+          <button id="dExpC" class="btn ghost" data-i18n="exportConv"></button>
+          <button id="dBackup" class="btn ghost" data-i18n="backupBtn"></button>
+          <button id="dRestore" class="btn ghost" data-i18n="restoreBtn"></button>
+          <button id="dPush" class="btn ghost" data-i18n="syncPush"></button>
+          <button id="dPull" class="btn ghost" data-i18n="syncPull"></button>
+        </div>
+        <input id="dFile" type="file" accept="application/json" hidden>
+        <p id="dMsg" class="small"></p>
+      </div>
+    </section>
+
+    <section id="tab-faq" class="tab">
+      <div class="faqwrap">
+        <h2 class="hello2" data-i18n="faqTitle">Questions people ask</h2>
+        <div id="faqList" class="faq"></div>
+      </div>
+    </section>
+
+    <section id="tab-about" class="tab">
+      <div class="prof">
+        <aside class="card pcard">
+          <div class="avatar"><span id="aIni">MF</span><img id="aImg" alt="Mahnoor Fatima" hidden></div>
+          <h2>Mahnoor Fatima</h2>
+          <p class="ptitle">AI &amp; Backend Engineer</p>
+          <dl class="facts">
+            <div><dt>Education</dt><dd>BSIT, Virtual University of Pakistan</dd></div>
+            <div><dt>Languages</dt><dd>Urdu (native), English (professional)</dd></div>
+          </dl>
+          <div class="links">
+            <a href="https://portfolio-pi-green-77.vercel.app/" target="_blank" rel="noopener"><span>Portfolio</span><svg class="i" aria-hidden="true"><use href="#i-ext"/></svg></a>
+            <a href="https://github.com/Mahnoor-fatima249" target="_blank" rel="noopener"><span>GitHub</span><svg class="i" aria-hidden="true"><use href="#i-ext"/></svg></a>
+            <a href="https://www.linkedin.com/in/mahnoor-fatima-529b91301/" target="_blank" rel="noopener"><span>LinkedIn</span><svg class="i" aria-hidden="true"><use href="#i-ext"/></svg></a>
+            <a href="https://leetcode.com/u/JbP00b4yGi/" target="_blank" rel="noopener"><span>LeetCode</span><svg class="i" aria-hidden="true"><use href="#i-ext"/></svg></a>
+            <a href="https://www.instagram.com/mahnoor_backend" target="_blank" rel="noopener"><span>Instagram</span><svg class="i" aria-hidden="true"><use href="#i-ext"/></svg></a>
+          </div>
+        </aside>
+
+        <div class="pmain">
+          <div class="blk">
+            <h3 data-i18n="aSummary">Summary</h3>
+            <p>AI engineer and backend architect focused on production-grade systems: FastAPI services, enterprise LLM integrations, RAG pipelines and autonomous agents. Previously Lead Backend Engineer and AI Systems Architect at NexeAgent.</p>
+            <p>HEC Generative AI top performer (96.08%), former Technical Director at Women in Computer Science (WICS), and a BSIT student at Virtual University of Pakistan. 46+ repositories on GitHub and three internships.</p>
+          </div>
+
+          <div class="blk">
+            <h3 data-i18n="aExperience">Experience</h3>
+            <div class="entry"><span class="when">Previous</span><div><b>Lead Backend Engineer &amp; AI Systems Architect</b><span class="org">NexeAgent</span><p>AI-powered backend architecture, scalable FastAPI services, enterprise LLM integrations and automation frameworks for production AI applications.</p></div></div>
+            <div class="entry"><span class="when">2026</span><div><b>Technical Director</b><span class="org">Women in Computer Science (WICS)</span><p>Led technical strategy and engineering initiatives, and ran coding cohorts and skill programmes for the community.</p></div></div>
+            <div class="entry"><span class="when">2026</span><div><b>Engineering Team Lead</b><span class="org">National hackathons (AI Seekho and others)</span><p>Led technical teams in competitive hackathons, from planning and workflow through to delivery.</p></div></div>
+            <div class="entry"><span class="when">2025</span><div><b>Full-Stack &amp; AI Engineer (internships)</b><span class="org">TEYZIX CORE, DecodeLabs</span><p>Built full-stack features and integrated machine-learning models.</p></div></div>
+          </div>
+
+          <div class="blk">
+            <h3 data-i18n="aEducation">Education</h3>
+            <div class="entry"><span class="when">2023 – now</span><div><b>BSc Information Technology</b><span class="org">Virtual University of Pakistan</span><p>Currently in the 6th semester. Focus on software engineering, database systems and object-oriented programming.</p></div></div>
+          </div>
+
+          <div class="blk">
+            <h3 data-i18n="aRecognition">Recognition</h3>
+            <div class="entry"><span class="when">2026</span><div><b>AI Seekho 2026: Silver Tier Winner</b><p>National hackathon. Team lead.</p></div></div>
+            <div class="entry"><span class="when">2026</span><div><b>DYLP Hackathon: Top 30 (26th place)</b><p>National level. Team lead.</p></div></div>
+            <div class="entry"><span class="when">HEC</span><div><b>Generative AI Developer: Top Performer</b><p>NCEAC–HEC training, score 96.08%.</p></div></div>
+            <div class="entry"><span class="when">2026</span><div><b>Aspire Leaders Program</b><p>2026 cohort.</p></div></div>
+          </div>
+
+          <div class="blk">
+            <h3 data-i18n="aSkills">Technical skills</h3>
+            <dl class="dl">
+              <div><dt>AI / LLM</dt><dd>Groq API, Google AI Studio, Azure ML, RAG, Hugging Face</dd></div>
+              <div><dt>Backend</dt><dd>Python, Django, FastAPI, REST APIs, WebSocket, Celery</dd></div>
+              <div><dt>Frontend</dt><dd>React, JavaScript, HTML5, CSS3</dd></div>
+              <div><dt>Data</dt><dd>PostgreSQL, MongoDB, MySQL, Redis</dd></div>
+              <div><dt>DevOps</dt><dd>Docker, Git and GitHub, Linux, Vercel, AWS</dd></div>
+            </dl>
+          </div>
+
+          <div class="blk work">
+            <h3 data-i18n="aWork">Selected work</h3>
+            <a href="https://github.com/Mahnoor-fatima249/LLM-COST-TRACKER" target="_blank" rel="noopener"><b>LLM Cost Tracker<svg class="i" aria-hidden="true"><use href="#i-ext"/></svg></b><span>Cost optimisation platform with real-time analytics and multi-provider monitoring. Python, FastAPI.</span></a>
+            <a href="https://github.com/Mahnoor-fatima249/AI_Study_Assistant" target="_blank" rel="noopener"><b>AI Study Assistant<svg class="i" aria-hidden="true"><use href="#i-ext"/></svg></b><span>Educational platform built on LLM workflows for personalised learning. Python, FastAPI, LangChain, Groq API.</span></a>
+            <a href="https://github.com/Mahnoor-fatima249/Subscription-Payment-Backend" target="_blank" rel="noopener"><b>Subscription Payment Backend<svg class="i" aria-hidden="true"><use href="#i-ext"/></svg></b><span>Billing platform with Stripe integration, JWT authentication and an analytics dashboard. TypeScript, Next.js, Prisma.</span></a>
+            <a href="https://github.com/Mahnoor-fatima249/Cloud-File-Storage-System-S3-Clone-" target="_blank" rel="noopener"><b>Cloud File Storage (S3 clone)<svg class="i" aria-hidden="true"><use href="#i-ext"/></svg></b><span>File storage infrastructure inspired by AWS S3. Python, FastAPI.</span></a>
+          </div>
+
+          <div class="blk">
+            <h3 data-i18n="aExtension">About this extension</h3>
+            <dl class="dl">
+              <div><dt>Version</dt><dd id="ver">—</dd></div>
+              <div><dt>Platform</dt><dd>Manifest V3 (Chrome, Edge, Firefox)</dd></div>
+              <div><dt>Built with</dt><dd>HTML, CSS and plain JavaScript. No third-party libraries at runtime.</dd></div>
+              <div><dt>Data</dt><dd>Settings and history are stored in the browser only. No account, no analytics.</dd></div>
+              <div><dt>Rate sources</dt><dd>open.er-api.com (current rates), fawazahmed0 currency-api (history), gold-api.com (gold and silver).</dd></div>
+              <div><dt>Credits</dt><dd>Fonts: DM Sans and Fraunces (SIL Open Font License). Flags: flag-icons (MIT).</dd></div>
+              <div><dt>Disclaimer</dt><dd>Rates are indicative, not bank quotes. Gold and zakat results are estimates.</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <footer class="foot">PKR Currency Converter · Built by Mahnoor Fatima</footer>
+  <script src="shared.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
