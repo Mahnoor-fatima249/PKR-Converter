@@ -1,7 +1,7 @@
 # Store listing text (copy and paste)
 
 Extension name: **PKR Currency Converter**
-Version: **3.5.0**
+Version: **1.0.0**
 Website / homepage: https://portfolio-pi-green-77.vercel.app/
 Category: **Productivity** (the closest fit on Chrome and Edge)
 Main language: **English** (you can add Urdu as a second listing language)
@@ -73,7 +73,7 @@ Rates come from free public services and are a guide only. They are not bank rat
 
 ## "What's new" (release notes)
 
-Version 3.5.0: first public release.
+Version 1.0.0: first public release.
 
 ## Images to upload
 

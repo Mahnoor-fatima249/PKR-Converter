@@ -1,4 +1,4 @@
-PKR CURRENCY CONVERTER  -  COMPLETE PACKAGE  (version 3.5.0)
+PKR CURRENCY CONVERTER  -  COMPLETE PACKAGE  (version 1.0.0)
 ==============================================================
 
 (Roman Urdu: is folder mein poori extension, Firefox wala version aur store par
